@@ -1,0 +1,22 @@
+{
+    "config": {
+      "step": {
+        "user": {
+          "title": "Connect to Xbox Dev Mode",
+          "description": "Enter the connection details for your Xbox in Dev Mode.",
+          "data": {
+            "ip_address": "IP Address",
+            "username": "Username",
+            "password": "Password"
+          }
+        }
+      },
+      "error": {
+        "cannot_connect": "Failed to connect. Check IP address and credentials.",
+        "unknown": "An unexpected error occurred."
+      },
+      "abort": {
+        "already_configured": "This Xbox is already configured."
+      }
+    }
+  }
