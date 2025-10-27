@@ -1,4 +1,4 @@
-[![ADD][hacs1]](https://ha-link.heyfordy.de/redirect/hacs_repository/?owner=Bitte-ein-Git&repository=ha_xbox-dev&category=integration) [![SETUP][setup1]](https://ha-link.heyfordy.de/redirect/hacs_repository/?owner=Bitte-ein-Git&repository=ha_xbox-dev&category=integration)
+[![ADD][hacs1]](https://ha-link.heyfordy.de/redirect/hacs_repository/?owner=Bitte-ein-Git&repository=ha_xbox-dev&category=integration) [![SETUP][setup1]](https://ha-link.heyfordy.de/redirect/config_flow_start/?domain=xbox_dev)
 
 <div align="center">
   <br>
@@ -33,7 +33,7 @@
 > After installation you **have to restart Home Assistant**
 
 ### Easy Configuration (Link to Config Screen)
-[![ADD][setup2]](https://ha-link.heyfordy.de/redirect/hacs_repository/?owner=Bitte-ein-Git&repository=ha_xbox-dev&category=integration)
+[![ADD][setup2]](https://ha-link.heyfordy.de/redirect/config_flow_start/?domain=xbox_dev)
 ### Manual Configuration
 1. Add a new config entry via UI:
    - Go to your Home Assistant **Settings**

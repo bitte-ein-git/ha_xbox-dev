@@ -28,7 +28,8 @@ async def validate_input(hass: HomeAssistant, data: dict) -> dict:
     try:
         await hass.async_add_executor_job(api.test_connection)
         machine_name = await hass.async_add_executor_job(api.get_machinename)
-        return {"title": f"{machine_name} ({data[CONF_IP_ADDRESS]})"}
+        # set title to machine_name only
+        return {"title": machine_name}
     except requests.exceptions.HTTPError as err:
         _LOGGER.error("Authentication failed: %s", err)
         raise ConnectionError("Authentication failed") from err
@@ -48,6 +49,7 @@ class XboxDevConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             try:
                 info = await validate_input(self.hass, user_input)
+                # use IP address for unique ID
                 await self.async_set_unique_id(user_input[CONF_IP_ADDRESS])
                 self._abort_if_unique_id_configured()
                 return self.async_create_entry(title=info["title"], data=user_input)
