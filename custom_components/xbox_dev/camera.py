@@ -7,6 +7,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN
 from .coordinator import XboxDevUpdateCoordinator
@@ -23,13 +24,16 @@ async def async_setup_entry(
     async_add_entities([XboxDevScreenshotCamera(coordinator, entry)])
 
 
-class XboxDevScreenshotCamera(Camera):
+class XboxDevScreenshotCamera(CoordinatorEntity[XboxDevUpdateCoordinator], Camera):
     """Implementation of an Xbox Dev screenshot camera."""
 
     def __init__(self, coordinator: XboxDevUpdateCoordinator, entry: ConfigEntry) -> None:
         """Initialize the camera."""
-        super().__init__()
-        self.coordinator = coordinator
+        # inherit from CoordinatorEntity
+        super().__init__(coordinator)
+        # initialize Camera
+        Camera.__init__(self)
+        
         self._attr_name = "Screenshot"
         self._attr_unique_id = f"{entry.entry_id}_screenshot"
         self._attr_device_info = DeviceInfo(
@@ -44,6 +48,10 @@ class XboxDevScreenshotCamera(Camera):
         self, width: int | None = None, height: int | None = None
     ) -> bytes | None:
         """Return a still image response."""
+        # return None if unavailable
+        if not self.available:
+            return None
+        
         # Fetch initial image if none exists
         if not self._image:
              await self.async_update_screenshot()
@@ -52,13 +60,22 @@ class XboxDevScreenshotCamera(Camera):
     async def async_update_screenshot(self):
         """Fetch a new screenshot from the Xbox."""
         _LOGGER.debug("Fetching new screenshot")
+        
+        # skip if coordinator is offline
+        if not self.coordinator.last_update_success:
+            _LOGGER.debug("Coordinator is offline, skipping screenshot fetch.")
+            self._image = None
+            self.async_write_ha_state()
+            return
+            
         try:
             image_bytes = await self.hass.async_add_executor_job(
                 self.coordinator.api.get_screenshot
             )
             self._image = image_bytes
-            # Notify HA that state has changed
-            self.async_write_ha_state()
         except Exception as e:
             _LOGGER.error("Failed to fetch screenshot: %s", e)
             self._image = None
+        
+        # notify HA state has changed
+        self.async_write_ha_state()

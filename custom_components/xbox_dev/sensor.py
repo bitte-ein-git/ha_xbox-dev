@@ -158,6 +158,11 @@ class XboxDevSensor(CoordinatorEntity[XboxDevUpdateCoordinator], SensorEntity):
     @property
     def native_value(self):
         """Return the state of the sensor."""
+        # return None if coordinator failed
+        if not self.coordinator.last_update_success:
+            return None
+        
         if self.coordinator.data and self.entity_description.value_fn:
             return self.entity_description.value_fn(self.coordinator.data)
+        
         return None

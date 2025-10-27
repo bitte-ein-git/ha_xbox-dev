@@ -3,9 +3,9 @@
   "name": "Xbox Dev Mode 🛠️",
   "codeowners": ["@Bitte-ein-Git", "@elias1731"],
   "config_flow": true,
-  "documentation": "https://github.com/Bitte-ein-Git/ha_xboxdevmode",
-  "iot_class": "cloud_polling",
-  "issue_tracker": "https://github.com/Bitte-ein-Git/ha_xboxdevmode/issues",
+  "documentation": "https://github.com/Bitte-ein-Git/ha_xbox-dev",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/Bitte-ein-Git/ha_xbox-dev/issues",
   "requirements": ["requests"],
-  "version": "1.0.0"
+  "version": "1.1.0"
 }
